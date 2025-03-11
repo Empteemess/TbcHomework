@@ -398,3 +398,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+[Bb]in/
+[Oo]bj/
+.idea
+.env
