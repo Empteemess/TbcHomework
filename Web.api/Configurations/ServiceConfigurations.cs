@@ -17,15 +17,14 @@ public static class ServiceConfigurations
 
         services.AddScoped<UserManager<ApplicationUser>>();
         services.AddScoped<IUserService,UserService>();
+        services.AddScoped<IStorageService,StorageService>();
         
         services.AddScoped<ErrorHandlingMiddleware>();
-        
         
         services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
-        
         
         return services;
     }

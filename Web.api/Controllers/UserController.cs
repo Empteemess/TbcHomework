@@ -28,4 +28,11 @@ public class UserController : ControllerBase
         await _userService.EditApplicationUserAsync(editApplicationUserDto);
         return NoContent();
     }
+
+    [HttpPut("image")]
+    public async Task<IActionResult> RemoveOrUpdateApplicationUserImage([FromBody] ImageRequestDto imageRequestDto)
+    {
+        await _userService.RemoveOrAddApplicationUserImageAsync(imageRequestDto);
+        return NoContent();
+    }
 }

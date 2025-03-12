@@ -38,6 +38,15 @@ public class ErrorHandlingMiddleware : IMiddleware
                 Details = exception.InnerException?.Message ?? exception.Message
             });
         }
+        catch (NotFoundException exception)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            await context.Response.WriteAsJsonAsync(new
+            {
+                Error = "A database update error occurred.",
+                Details = exception.InnerException?.Message ?? exception.Message
+            });
+        }
         catch (Exception exception)
         {
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
