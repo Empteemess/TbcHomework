@@ -28,6 +28,6 @@ public class ApplicationUser : IdentityUser<int>
     public string? Image { get; set; }
 
     public ICollection<PhoneInfo>? PhoneInfos { get; set; }
-    public ICollection<UserRelationship>? Connections { get; set; } = new HashSet<UserRelationship>();
-    public ICollection<UserRelationship>? ConnectedBy { get; set; } = new HashSet<UserRelationship>();
+    public ICollection<UserRelationship>? Connections { get; set; } = [];
+    public ICollection<UserRelationship>? ConnectedBy { get; set; } = [];
 }

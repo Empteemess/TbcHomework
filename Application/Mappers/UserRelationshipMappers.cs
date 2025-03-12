@@ -1,3 +1,4 @@
+using Application.Dtos.ApplicationUser;
 using Application.Dtos.UserRelationship;
 using Domain.Entities;
 

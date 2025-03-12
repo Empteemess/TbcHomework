@@ -1,4 +1,5 @@
 using Application.Dtos.ApplicationUser;
+using Application.Dtos.UserRelationship;
 using Domain.Entities;
 
 namespace Application.Mappers;
@@ -36,5 +37,23 @@ public static class ApplicationUserMappers
             editApplicationUserDto.PhoneInfos?.ToPhoneInfos().ToList() ?? applicationUser.PhoneInfos;
 
         return applicationUser;
+    }
+
+    public static GetApplicationUserDto ToGetApplicationUserDto(this ApplicationUser applicationUser,IEnumerable<FullRelationshipDto> fullRelationshipDto)
+    {
+        var getApplicationUserDto = new GetApplicationUserDto
+        {
+            FirstName = applicationUser.FirstName,
+            LastName = applicationUser.LastName,
+            Gender = applicationUser.Gender,
+            PersonalId = applicationUser.PersonalId,
+            BirthDate = applicationUser.BirthDate,
+            CityIdentifier = applicationUser.CityIdentifier,
+            Image = applicationUser.Image,
+            PhoneInfos = applicationUser.PhoneInfos?.ToPhoneInfosDto() ?? [],
+            Relationships = fullRelationshipDto
+        };
+
+        return getApplicationUserDto;
     }
 }

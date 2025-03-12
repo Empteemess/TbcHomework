@@ -18,6 +18,7 @@ public static class ServiceConfigurations
         services.AddScoped<UserManager<ApplicationUser>>();
 
         services.AddScoped<IUserRelationshipsRepository, UserRelationshipsRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IStorageService, StorageService>();

@@ -15,6 +15,13 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
+    [HttpGet("{userId:int}")]
+    public async Task<IActionResult> GetApplicationUserById(int userId)
+    {
+        var userInfo = await _userService.GetApplicationUserByIdAsync(userId);
+        return Ok(userInfo);
+    }
+
     [HttpDelete("{userId:int}")]
     public async Task<IActionResult> RemoveApplicationUser(int userId)
     {

@@ -12,4 +12,12 @@ public static class PhoneInfoMappers
         
         return mappedPhoneInfo;
     }
+    
+    public static IEnumerable<PhoneInfoDto> ToPhoneInfosDto(this IEnumerable<PhoneInfo> phoneInfo)
+    {
+        var mappedPhoneInfo = phoneInfo
+            .Select(ph => new PhoneInfoDto() { PhoneType = ph.PhoneType, PhoneNumber = ph.PhoneNumber });
+        
+        return mappedPhoneInfo;
+    }
 }
