@@ -21,4 +21,11 @@ public class UserController : ControllerBase
         await _userService.AddApplicationUserAsync(applicationUser);
         return NoContent();
     }
+
+    [HttpPut]
+    public async Task<IActionResult> EditApplicationUser([FromBody] EditApplicationUserDto editApplicationUserDto)
+    {
+        await _userService.EditApplicationUserAsync(editApplicationUserDto);
+        return NoContent();
+    }
 }
