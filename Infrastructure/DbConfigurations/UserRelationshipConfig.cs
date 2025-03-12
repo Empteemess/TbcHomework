@@ -15,12 +15,12 @@ public class UserRelationshipConfig : IEntityTypeConfiguration<UserRelationship>
             .HasOne(uc => uc.SourceUser)
             .WithMany(u => u.Connections)
             .HasForeignKey(uc => uc.SourceUserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
             .HasOne(uc => uc.TargetUser)
             .WithMany(u => u.ConnectedBy)
             .HasForeignKey(uc => uc.TargetUserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

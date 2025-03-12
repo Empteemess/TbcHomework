@@ -19,6 +19,18 @@ public class UserService : IUserService
         _configuration = configuration;
     }
 
+    public async Task RemoveApplicationUser(int userId)
+    {
+        var applicationUser = await _unitOfWork.UserManager.FindByIdAsync($"{userId}");
+
+        if(applicationUser is null) throw new IdentityException($"Application User with id - ({userId})",(int)HttpStatusCode.NotFound);
+        
+        _unitOfWork.UserRelationshipsRepository.RemoveRelationshipBySourceId(applicationUser.Id);
+        
+        await _unitOfWork.UserManager.DeleteAsync(applicationUser);
+        await _unitOfWork.SaveChangesAsync();
+    }
+    
     public async Task AddApplicationUserAsync(ApplicationUserDto applicationUserDto)
     {
         var applicationUser = applicationUserDto.ToApplicationUser();

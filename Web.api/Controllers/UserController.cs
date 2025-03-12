@@ -15,6 +15,13 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
+    [HttpDelete("{userId:int}")]
+    public async Task<IActionResult> RemoveApplicationUser(int userId)
+    {
+        await _userService.RemoveApplicationUser(userId);
+        return NoContent();
+    }
+    
     [HttpPost]
     public async Task<IActionResult> AddApplicationUser([FromBody] ApplicationUserDto applicationUser)
     {

@@ -9,12 +9,15 @@ public class UnitOfWork : IUnitOfWork
     private readonly AppDbContext _appDbContext;
 
     public UnitOfWork(AppDbContext appDbContext
-        ,UserManager<ApplicationUser> userManager)
+        ,UserManager<ApplicationUser> userManager,
+        IUserRelationshipsRepository userRelationshipsRepository)
     {
         _appDbContext = appDbContext;
         UserManager = userManager;
+        UserRelationshipsRepository = userRelationshipsRepository;
     }
 
+    public IUserRelationshipsRepository UserRelationshipsRepository { get; }
     public UserManager<ApplicationUser> UserManager { get; }
 
     public async Task SaveChangesAsync()
