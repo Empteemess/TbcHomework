@@ -12,6 +12,7 @@ public static class ApplicationUserMappers
         {
             FirstName = applicationUserDto.FirstName,
             LastName = applicationUserDto.LastName,
+            Gender = applicationUserDto.Gender,
             UserName = applicationUserDto.PersonalId,
             PersonalId = applicationUserDto.PersonalId,
             BirthDate = applicationUserDto.BirthDate,
@@ -38,7 +39,24 @@ public static class ApplicationUserMappers
 
         return applicationUser;
     }
+    
+    public static GetApplicationUserDto ToGetApplicationUser(this ApplicationUser applicationUser)
+    {
+        var getApplicationUserDto = new GetApplicationUserDto
+        {
+            FirstName = applicationUser.FirstName,
+            LastName = applicationUser.LastName,
+            Gender = applicationUser.Gender,
+            PersonalId = applicationUser.PersonalId,
+            BirthDate = applicationUser.BirthDate,
+            CityIdentifier = applicationUser.CityIdentifier,
+            Image = applicationUser.Image,
+            PhoneInfos = applicationUser.PhoneInfos?.ToPhoneInfosDto() ?? [],
+        };
 
+        return getApplicationUserDto;
+    }
+    
     public static GetApplicationUserDto ToGetApplicationUserDto(this ApplicationUser applicationUser,IEnumerable<FullRelationshipDto> fullRelationshipDto)
     {
         var getApplicationUserDto = new GetApplicationUserDto

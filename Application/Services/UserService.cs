@@ -4,7 +4,7 @@ using Application.Dtos.UserRelationship;
 using Application.IServices;
 using Application.Mappers;
 using Domain.CustomExceptions;
-using Domain.Enums;
+using Domain.Entities;
 using Domain.IRepositories;
 using Microsoft.Extensions.Configuration;
 
@@ -21,12 +21,56 @@ public class UserService : IUserService
         _configuration = configuration;
     }
 
+    public IEnumerable<GetApplicationUserDto> FilterApplicationUser(FilterDto filterDto)
+    {
+        var users = _unitOfWork.UserRepository.GetAllApplicationUsers();
+
+        var filteredUsers = FilterUsers(filterDto, users);
+
+        var pagingResult = filteredUsers
+            .Skip((filterDto.QurrentPage - 1) * filterDto.UserQuantity)
+            .Take(filterDto.UserQuantity)
+            .Select(x => x.ToGetApplicationUser())
+            .ToList();
+
+        return pagingResult;
+    }
+
+    private IQueryable<ApplicationUser> FilterUsers(FilterDto filterDto, IQueryable<ApplicationUser> users)
+    {
+        if (filterDto.FirstName is not null)
+        {
+            users = users.Where(x => x.FirstName.Contains(filterDto.FirstName));
+        }
+
+        if (filterDto.LastName is not null)
+        {
+            users = users.Where(x => x.LastName.Contains(filterDto.LastName));
+        }
+
+        if (filterDto.PersonalId is not null)
+        {
+            users = users.Where(x => x.PersonalId.Contains(filterDto.PersonalId));
+        }
+
+        return users;
+    }
+
     public async Task<GetApplicationUserDto> GetApplicationUserByIdAsync(int userId)
     {
         var user = await _unitOfWork.UserRepository.GetUserByIdAsync(userId);
 
         if (user is null) throw new NotFoundException("User not found");
 
+        var allRelationships = GetRelationshipDtos(user);
+
+        var mappedApplicationUser = user.ToGetApplicationUserDto(allRelationships);
+
+        return mappedApplicationUser;
+    }
+
+    private IEnumerable<FullRelationshipDto> GetRelationshipDtos(ApplicationUser user)
+    {
         var connections = user.Connections ?? [];
         var connectedBy = user.ConnectedBy ?? [];
 
@@ -36,10 +80,10 @@ public class UserService : IUserService
         {
             var relationDto = new FullRelationshipDto
             {
-                UserId = relationship.SourceUserId,
-                FirstName = relationship.SourceUser?.FirstName ?? String.Empty,
-                LastName = relationship.SourceUser?.LastName ?? String.Empty,
-                Image = relationship.SourceUser?.Image ?? String.Empty,
+                UserId = relationship.TargetUserId,
+                FirstName = relationship.TargetUser?.FirstName ?? String.Empty,
+                LastName = relationship.TargetUser?.LastName ?? String.Empty,
+                Image = relationship.TargetUser?.Image ?? String.Empty,
             };
             allRelationships.Add(relationDto);
         }
@@ -55,10 +99,8 @@ public class UserService : IUserService
             };
             allRelationships.Add(relationDto);
         }
-        
-        var mappedApplicationUser = user.ToGetApplicationUserDto(allRelationships);
 
-        return mappedApplicationUser;
+        return allRelationships;
     }
 
     public async Task RemoveApplicationUser(int userId)

@@ -14,6 +14,15 @@ public class UserRepository : IUserRepository
         _applicationUsers = appDbContext.Set<ApplicationUser>();
     }
 
+    public IQueryable<ApplicationUser> GetAllApplicationUsers()
+    {
+        var users = _applicationUsers
+            .Include(x => x.PhoneInfos)
+            .AsQueryable();
+
+        return users;
+    }
+    
     public async Task<ApplicationUser?> GetUserByIdAsync(int userId)
     {
         var users = await _applicationUsers

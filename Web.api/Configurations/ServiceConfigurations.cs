@@ -6,6 +6,7 @@ using Domain.IRepositories;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Web.api.Filters;
 using Web.api.MiddleWare;
 
 namespace Web.api.Configurations;
@@ -26,6 +27,11 @@ public static class ServiceConfigurations
 
         services.AddScoped<ErrorHandlingMiddleware>();
 
+        services.AddControllers(opt =>
+        {
+            opt.Filters.Add<ValidateModelStateAttribute>();
+        });
+        
         services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());

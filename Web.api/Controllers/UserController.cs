@@ -15,6 +15,13 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAllApplicationUser([FromQuery] FilterDto filterDto)
+    {
+        var filteredAppUser =  _userService.FilterApplicationUser(filterDto);
+        return Ok(filteredAppUser);
+    }
+    
     [HttpGet("{userId:int}")]
     public async Task<IActionResult> GetApplicationUserById(int userId)
     {
