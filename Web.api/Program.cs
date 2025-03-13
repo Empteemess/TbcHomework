@@ -22,6 +22,8 @@ public class Program
         builder.Services.AddDbConfigurations(builder.Configuration);
         builder.Services.AddServiceConfigurations();
 
+        builder.Services.AddLocalizationConfig();
+
         var app = builder.Build();
 
         app.UseSwagger();
@@ -30,7 +32,9 @@ public class Program
         app.UseMiddleware<ErrorHandlingMiddleware>();
 
         app.UseHttpsRedirection();
-
+        
+        app.UseRequestLocalization();
+        
         app.UseAuthorization();
 
         app.MapControllers();
