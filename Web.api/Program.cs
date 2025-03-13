@@ -20,8 +20,9 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddDbConfigurations(builder.Configuration);
+        
         builder.Services.AddServiceConfigurations();
-
+        builder.Services.AddSwaggerConfigs();
         builder.Services.AddLocalizationConfig();
 
         var app = builder.Build();

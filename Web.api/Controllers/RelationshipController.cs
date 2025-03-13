@@ -2,6 +2,7 @@ using Application.Dtos.Relationship;
 using Application.IServices;
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Web.api.Controllers;
 
@@ -17,6 +18,12 @@ public class RelationshipController : ControllerBase
     }
 
     [HttpPost]
+    [SwaggerOperation
+    (
+        Summary = "Add Relationship",
+        Description = "Add Relationship With source , targetId and ConnectionType",
+        OperationId = "AddRelationship"
+    )]
     public async Task<IActionResult> AddRelationship(AddRelationshipDto addRelationshipDto)
     {
         await _userRelationshipsService.AddUserRelationship(addRelationshipDto);
@@ -24,6 +31,12 @@ public class RelationshipController : ControllerBase
     }
     
     [HttpDelete]
+    [SwaggerOperation
+    (
+        Summary = "Remove Relationship",
+        Description = "Remove Relationship With source and targetId",
+        OperationId = "RemoveRelationship"
+    )]
     public async Task<IActionResult> RemoveRelationship(RemoveRelationshipDto removeRelationshipDto)
     {
         await _userRelationshipsService.RemoveUserRelationship(removeRelationshipDto);

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using Web.api.MiddleWare.Localizer;
 
 namespace Web.api.Controllers;
@@ -15,6 +16,10 @@ public class HomeController : ControllerBase
     }
 
     [HttpGet]
+    [SwaggerOperation
+    (
+        Summary = "Get Information Based on Language"
+    )]
     public IActionResult Get()
     {
         return Ok(new { Message = _localizer["Welcome"] });
